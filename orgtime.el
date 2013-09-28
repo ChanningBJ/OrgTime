@@ -11,7 +11,7 @@
   ;; (call-process-shell-command "scrot" nil nil nil nil " -s " (concat
   ;;                               "\"" filename "\"" ))
   (setq summary_content_begin "#+BEGIN: clocktable")
-  (setq summary_content_end "#+END")
+  (setq summary_content_end "#+END:")
   (beginning-of-buffer)
   (search-forward summary_content_begin)
   (beginning-of-line)

@@ -185,9 +185,6 @@ if __name__ == '__main__':
         timeDataCurMonth.addTime(curTag,orgClockTime)
     fd.close()
 
-    print timeDataToday.totalTime()
-    print timeDataCurWeek.totalTime()
-    print timeDataCurMonth.totalTime()
     orgTable = OrgTable(2)
     orgTable.setHeaderData(["TimeFrame","Working Time"])
     orgTable.addRowData(["Today",timeDataToday.totalTime()])

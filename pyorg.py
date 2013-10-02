@@ -3,8 +3,8 @@ import sys,os
 import re
 from pychartdir import *
 from collections import namedtuple
-
-        
+from datetime import date
+from OrgTable import *        
 
         
 class OrgLine(object):
@@ -24,6 +24,10 @@ class OrgLine(object):
         #     self._tag = self._parseTag()
         # else:
         #     self._timeSpent = self._parseClockTime()
+
+    def _parseTimeStr(self,timeStr):
+        timeVal = timeStr.split("-")
+        return date(int(timeVal[0]),int(timeVal[1]),int(timeVal[2]))
 
     def getLevel(self,):
         """
@@ -61,30 +65,83 @@ class OrgLine(object):
                 time = int(timeStr[0])*60+int(timeStr[1])
                 start_end = date_pattern.findall(self.line)
                 if len(start_end) == 2:
-                    return (start_end[0],start_end[1],time)
+                    return (self._parseTimeStr(start_end[0]),self._parseTimeStr(start_end[1]) ,time)
+                    #return (start_end[0],start_end[1],time)
         return (None,None,0)
             
-        
-class TimeData(object):
+
+class TimeFrame_Today(object):
     """
     """
     
     def __init__(self, ):
         """
         """
+        self._today = date.today() 
+    def inTimeFrame(self, timeFrameDate):
+        return self._today == timeFrameDate
+        
+class TimeFrame_CurWeek(object):
+    """
+    """
+    
+    def __init__(self, ):
+        """
+        """
+        curDateISOCanendar = date.today().isocalendar()
+        self._curWeek = curDateISOCanendar[1]
+        self._curYear = curDateISOCanendar[0]
+
+    def inTimeFrame(self, timeFrameDate):
+        timeFrameDateCalendar = timeFrameDate.isocalendar()
+        return (timeFrameDateCalendar[1] == self._curWeek) and (timeFrameDateCalendar[0] == self._curYear )
+
+
+        
+class TimeFrame_CurMonth(object):
+    """
+    """
+    
+    def __init__(self, ):
+        """
+        """
+        curDay = date.today();
+        self._curMonth = curDay.month
+        self._curYear = curDay.year
+    def inTimeFrame(self, timeFrameDate):
+        return (self._curYear == timeFrameDate.year) and (self._curMonth == timeFrameDate.month)
+        
+        
+
+    
+class TimeData(object):
+    """
+    """
+    
+    def __init__(self, timeFrame):
+        """
+        """
         self._timeData = {}
+        self._timeFrame = timeFrame
+        self._totalTime = 0
+
 
     def addTime(self, tag, (startTime,endTime,timeSpent)):
         """
         """
         if startTime is None:
             return
-        if tag in self._timeData:
-            self._timeData[tag] = self._timeData[tag] + timeSpent
-        else:
-            self._timeData[tag] = timeSpent
+        if self._timeFrame.inTimeFrame(startTime):
+            self._totalTime = self._totalTime+timeSpent
+            if tag in self._timeData:
+                self._timeData[tag] = self._timeData[tag] + timeSpent
+            else:
+                self._timeData[tag] = timeSpent
 
+    def totalTime(self,):
+        return "%dh %dm" % (self._totalTime/60,self._totalTime%60)
 
+            
     
     def pieChart(self, fileName):
         """
@@ -112,28 +169,32 @@ class TimeData(object):
             
 # I only want to know the time spend for 1st level of task, do not need to know too detail information
 if __name__ == '__main__':
-    Row = namedtuple('Row',['first','second','third'])
-    data1 = Row(1,2,3)
-    data2 = Row(4,5,6)
-    tab = OrgTable()
-    tab.printTable([data1,data2])
+    
     fd = open(sys.argv[1])
-    timeData = TimeData()
+    timeDataToday = TimeData(TimeFrame_Today())
+    timeDataCurWeek = TimeData(TimeFrame_CurWeek())
+    timeDataCurMonth = TimeData(TimeFrame_CurMonth())
     curTag = None
-#    timeSpent = 0
     for line in fd.readlines():
         orgLine = OrgLine(line)
         if orgLine.getLevel() == 1:
-#            timeData.addTime(curTag, timeSpent)
             curTag = orgLine.getTag();
-        timeData.addTime(curTag,orgLine.getClockTime())
-#            timeSpent = 0
-###        else:
-#            timeSpent = timeSpent + orgLine.getClockTime()
-        # elif orgLine.getClockTime() is not None:
-        #     timeSpent = timeSpent + orgLine.getClockTime()
-#    timeData.addTime(curTag, timeSpent)
+        orgClockTime = orgLine.getClockTime()
+        timeDataToday.addTime(curTag,orgClockTime)
+        timeDataCurWeek.addTime(curTag,orgClockTime)
+        timeDataCurMonth.addTime(curTag,orgClockTime)
     fd.close()
-    timeData.debug_printData()
-    timeData.pieChart("mytime.png")
+
+    print timeDataToday.totalTime()
+    print timeDataCurWeek.totalTime()
+    print timeDataCurMonth.totalTime()
+    orgTable = OrgTable(2)
+    orgTable.setHeaderData(["TimeFrame","Working Time"])
+    orgTable.addRowData(["Today",timeDataToday.totalTime()])
+    orgTable.addRowData(["This Week",timeDataCurWeek.totalTime()])
+    orgTable.addRowData(["This Month",timeDataCurMonth.totalTime()])
+    orgTable.printTable()
+#    timeDataToday.pieChart("mytime_today.png")
+#    timeDataCurWeek.pieChart("mytime_curweek.png")
+#    timeDataCurMonth.pirChart("mytime_curmonth.png")
     

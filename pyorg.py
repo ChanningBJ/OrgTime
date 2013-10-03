@@ -4,7 +4,7 @@ import re
 from pychartdir import *
 from collections import namedtuple
 from datetime import date
-from OrgTable import *        
+import OrgModeTxt        
 
         
 class OrgLine(object):
@@ -201,7 +201,7 @@ if __name__ == '__main__':
         timeDataCurMonth.addTime(curTag,orgClockTime)
     fd.close()
 
-    orgTable = OrgTable(2)
+    orgTable = OrgModeTxt.OrgTable(2)
     orgTable.setHeaderData(["TimeFrame","Working Time"])
     orgTable.addRowData(["Today",timeDataToday.totalTimeStr()])
     orgTable.addRowData(["This Week",timeDataCurWeek.totalTimeStr()])
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     for timeData in [timeDataToday,timeDataCurWeek,timeDataCurMonth]:
         if timeData.totalTime() is not 0:
             timeData.pieChart()
-            print " [["+timeData.pieChartPath()+"]] ",
+            print OrgModeTxt.fileLink(timeData.pieChartPath()) + " ",
 #    timeDataToday.pieChart("mytime_today.png")
 #    timeDataCurWeek.pieChart("mytime_curweek.png")
 #    timeDataCurMonth.pirChart("mytime_curmonth.png")

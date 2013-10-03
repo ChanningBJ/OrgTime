@@ -47,7 +47,9 @@ class OrgTable(object):
             print line
 #        print tableData
 
-
+def fileLink(filename):
+    return "[["+filename+"]]"
+            
 if __name__ == '__main__':
     orgtable = OrgTable(3)
     orgtable.setHeaderData(["c1","c2","c3"])

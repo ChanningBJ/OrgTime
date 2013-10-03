@@ -211,7 +211,4 @@ if __name__ == '__main__':
         if timeData.totalTime() is not 0:
             timeData.pieChart()
             print OrgModeTxt.fileLink(timeData.pieChartPath()) + " ",
-#    timeDataToday.pieChart("mytime_today.png")
-#    timeDataCurWeek.pieChart("mytime_curweek.png")
-#    timeDataCurMonth.pirChart("mytime_curmonth.png")
     

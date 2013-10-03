@@ -80,6 +80,9 @@ class TimeFrame_Today(object):
         self._today = date.today() 
     def inTimeFrame(self, timeFrameDate):
         return self._today == timeFrameDate
+
+    def getTimeFrameName(self,):
+        return "Today"
         
 class TimeFrame_CurWeek(object):
     """
@@ -96,6 +99,9 @@ class TimeFrame_CurWeek(object):
         timeFrameDateCalendar = timeFrameDate.isocalendar()
         return (timeFrameDateCalendar[1] == self._curWeek) and (timeFrameDateCalendar[0] == self._curYear )
 
+    def getTimeFrameName(self,):
+        return "Current Week"
+
 
         
 class TimeFrame_CurMonth(object):
@@ -110,7 +116,9 @@ class TimeFrame_CurMonth(object):
         self._curYear = curDay.year
     def inTimeFrame(self, timeFrameDate):
         return (self._curYear == timeFrameDate.year) and (self._curMonth == timeFrameDate.month)
-        
+
+    def getTimeFrameName(self,):
+        return "Current Month"
         
 
     
@@ -118,12 +126,13 @@ class TimeData(object):
     """
     """
     
-    def __init__(self, timeFrame):
+    def __init__(self, timeFrame, workingDir):
         """
         """
         self._timeData = {}
         self._timeFrame = timeFrame
         self._totalTime = 0
+        self._workingDir = workingDir
 
 
     def addTime(self, tag, (startTime,endTime,timeSpent)):
@@ -138,22 +147,29 @@ class TimeData(object):
             else:
                 self._timeData[tag] = timeSpent
 
-    def totalTime(self,):
+    def totalTimeStr(self,):
         return "%dh %dm" % (self._totalTime/60,self._totalTime%60)
 
-            
+    def totalTime(self,):
+        return self._totalTime
+
+    def pieChartPath(self,):
+        fileName = self._timeFrame.getTimeFrameName().replace(' ','_')+".png"
+        return os.path.join(self._workingDir,fileName)
+
     
-    def pieChart(self, fileName):
+    def pieChart(self, ):
         """
         """
         # Create a PieChart object of size 360 x 300 pixels
         c = PieChart(360, 300)
+        c.addTitle(self._timeFrame.getTimeFrameName(), "arialbd.ttf", 10)
         # Set the center of the pie at (180, 140) and the radius to 100 pixels
         c.setPieSize(180, 140, 100)
         # Set the pie data and the pie labels
         c.setData(self._timeData.values(), self._timeData.keys())
         # Output the chart
-        c.makeChart("simplepie.png")
+        c.makeChart(self.pieChartPath())
     
     def debug_printData(self, ):
         for tag in self._timeData:
@@ -171,9 +187,9 @@ class TimeData(object):
 if __name__ == '__main__':
     
     fd = open(sys.argv[1])
-    timeDataToday = TimeData(TimeFrame_Today())
-    timeDataCurWeek = TimeData(TimeFrame_CurWeek())
-    timeDataCurMonth = TimeData(TimeFrame_CurMonth())
+    timeDataToday = TimeData(TimeFrame_Today(),sys.argv[2])
+    timeDataCurWeek = TimeData(TimeFrame_CurWeek(),sys.argv[2])
+    timeDataCurMonth = TimeData(TimeFrame_CurMonth(),sys.argv[2])
     curTag = None
     for line in fd.readlines():
         orgLine = OrgLine(line)
@@ -187,10 +203,14 @@ if __name__ == '__main__':
 
     orgTable = OrgTable(2)
     orgTable.setHeaderData(["TimeFrame","Working Time"])
-    orgTable.addRowData(["Today",timeDataToday.totalTime()])
-    orgTable.addRowData(["This Week",timeDataCurWeek.totalTime()])
-    orgTable.addRowData(["This Month",timeDataCurMonth.totalTime()])
+    orgTable.addRowData(["Today",timeDataToday.totalTimeStr()])
+    orgTable.addRowData(["This Week",timeDataCurWeek.totalTimeStr()])
+    orgTable.addRowData(["This Month",timeDataCurMonth.totalTimeStr()])
     orgTable.printTable()
+    for timeData in [timeDataToday,timeDataCurWeek,timeDataCurMonth]:
+        if timeData.totalTime() is not 0:
+            timeData.pieChart()
+            print " [["+timeData.pieChartPath()+"]] ",
 #    timeDataToday.pieChart("mytime_today.png")
 #    timeDataCurWeek.pieChart("mytime_curweek.png")
 #    timeDataCurMonth.pirChart("mytime_curmonth.png")

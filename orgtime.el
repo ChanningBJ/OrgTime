@@ -1,4 +1,8 @@
 
+(setq org_py_exe "/Users/susuxixi/Documents/workspace/OrgTime/pyorg.py")
+(setq org_filename "/Users/susuxixi/Documents/workspace/OrgTime/test.org")
+(setq png_path "/Users/susuxixi/Documents/workspace/OrgTime/")
+
 (defun org-time-chart ()
   "Take a screenshot into a unique-named file in the current buffer file
   directory and insert a link to this file."
@@ -7,7 +11,7 @@
   ;;   (concat (make-temp-name
   ;;        (concat  (getenv "HOME") "/.emacs.img/" ) ) ".png"))
   ;; (suspend-frame)
-  (setq msg (shell-command-to-string "ls -l"))
+  (setq msg (shell-command-to-string (concat org_py_exe " " org_filename " " png_path)))
   ;; (call-process-shell-command "scrot" nil nil nil nil " -s " (concat
   ;;                               "\"" filename "\"" ))
   (setq summary_content_begin "#+BEGIN: clocktable")

@@ -11,7 +11,7 @@
   ;;   (concat (make-temp-name
   ;;        (concat  (getenv "HOME") "/.emacs.img/" ) ) ".png"))
   ;; (suspend-frame)
-  (setq msg (shell-command-to-string (concat org_py_exe " " org_filename " " png_path)))
+  (setq msg (shell-command-to-string (concat org_py_exe " " buffer-file-name " " png_path)))
   ;; (call-process-shell-command "scrot" nil nil nil nil " -s " (concat
   ;;                               "\"" filename "\"" ))
   (setq summary_content_begin "#+BEGIN: clocktable")

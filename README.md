@@ -7,7 +7,7 @@ Here is an example:
 ## Install & Setup
 1. install pychartdir (see http://www.advsofteng.com/download.html for more information)
 1. install texttable (see https://pypi.python.org/pypi/texttable for more information)
-1. Download and extract the source code to your emacs site
+1. Download and extract the source code
 1. Put following code in your .emacs file
 
 ```lisp

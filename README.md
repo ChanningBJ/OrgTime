@@ -10,6 +10,7 @@ Here is an example:
 1. Put following code in your .emacs file
 
 ```lisp
+(add-hook 'org-mode-hook 'iimage-mode) ; enable iimage-mode for org-mode
 (add-to-list 'load-path  "/path/to/OrgTime")
 (require 'orgtime)
 (setq png_path "/path/to/store/the/generated/piechart/") ; optional, will use ~/.emacs.d is not set

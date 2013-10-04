@@ -1,11 +1,14 @@
-
-(setq org_py_exe "/Users/susuxixi/Documents/workspace/OrgTime/pyorg.py")
-(setq org_filename "/Users/susuxixi/Documents/workspace/OrgTime/test.org")
-(setq png_path "/Users/susuxixi/Documents/workspace/OrgTime/")
+(provide 'orgtime)
+(setq org_py_exe "pyorg.py")
+;(setq org_filename "/Users/susuxixi/Documents/workspace/OrgTime/test.org")
+;(setq png_path "~/.emacs.d/")
 
 (defun org-time-chart ()
   "Take a screenshot into a unique-named file in the current buffer file
   directory and insert a link to this file."
+  (if (boundp 'png_path)
+      ()
+    (setq png_path "~/.emacs.d/"))
   (interactive)
   ;; (setq filename
   ;;   (concat (make-temp-name

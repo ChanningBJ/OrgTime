@@ -8,6 +8,10 @@ Here is an example:
 1. Download and extract the source code to your emacs site
 1. Copy or link file orgtime.py to your $PATH
 1. Put following code in your .emacs file
+```lisp
+(require 'eclim)
+(global-eclim-mode)
+```
 `` `lisp
 (add-to-list 'load-path  "/path/to/OrgTime")
 (require 'orgtime)

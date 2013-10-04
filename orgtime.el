@@ -3,7 +3,7 @@
 ;(setq org_filename "/Users/susuxixi/Documents/workspace/OrgTime/test.org")
 ;(setq png_path "~/.emacs.d/")
 
-(defun org-time-chart ()
+(defun org-time-summary ()
   "Take a screenshot into a unique-named file in the current buffer file
   directory and insert a link to this file."
   (if (boundp 'png_path)

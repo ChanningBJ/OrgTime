@@ -1,5 +1,5 @@
 (provide 'orgtime)
-(setq org_py_exe "pyorg.py")
+(setq org_py_exe "orgtime.py")
 ;(setq org_filename "/Users/susuxixi/Documents/workspace/OrgTime/test.org")
 ;(setq png_path "~/.emacs.d/")
 

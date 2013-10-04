@@ -5,6 +5,7 @@ This emacs extension is designed to work with emacs org-mode. It can generate a 
 Here is an example:
 ![alt tag](https://raw.github.com/Chengming/OrgTime/master/example.png)
 ## Install & Setup
+1. install pychartdir (see http://www.advsofteng.com/download.html for more information)
 1. Download and extract the source code to your emacs site
 1. Copy or link file orgtime.py to your $PATH
 1. Put following code in your .emacs file

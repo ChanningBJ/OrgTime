@@ -8,7 +8,15 @@ from collections import namedtuple
 from datetime import date
 import OrgModeTxt        
 
-        
+def datetime_today():
+    """
+    Use this function to get datetime object of current date, this is used for testing
+    Can set the current date to any date.
+    """
+    return date.today()
+#    return date(2013, 10, 22)
+
+
 class OrgLine(object):
     """
     """
@@ -79,7 +87,7 @@ class TimeFrame_Today(object):
     def __init__(self, ):
         """
         """
-        self._today = date.today() 
+        self._today = datetime_today() 
     def inTimeFrame(self, timeFrameDate):
         return self._today == timeFrameDate
 
@@ -93,7 +101,7 @@ class TimeFrame_CurWeek(object):
     def __init__(self, ):
         """
         """
-        curDateISOCanendar = date.today().isocalendar()
+        curDateISOCanendar = datetime_today().isocalendar()
         self._curWeek = curDateISOCanendar[1]
         self._curYear = curDateISOCanendar[0]
 
@@ -113,7 +121,7 @@ class TimeFrame_CurMonth(object):
     def __init__(self, ):
         """
         """
-        curDay = date.today();
+        curDay = datetime_today();
         self._curMonth = curDay.month
         self._curYear = curDay.year
     def inTimeFrame(self, timeFrameDate):

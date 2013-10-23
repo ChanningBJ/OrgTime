@@ -25,15 +25,6 @@ class OrgLine(object):
         """
         """
         self.line = lineStr
-        # self._level = None
-        # self._tag = None
-        # self._timeSpent = None
-        # level = self._parseLevel()
-        # if level is not None:
-        #     self._level = level
-        #     self._tag = self._parseTag()
-        # else:
-        #     self._timeSpent = self._parseClockTime()
 
     def _parseTimeStr(self,timeStr):
         timeVal = timeStr.split("-")

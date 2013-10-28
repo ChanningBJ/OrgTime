@@ -6,7 +6,7 @@
   "Take a screenshot into a unique-named file in the current buffer file
   directory and insert a link to this file."
   (interactive)
-
+  (save-buffer)
   (setq msg (shell-command-to-string (concat org_py_exe " " buffer-file-name " " orgtime_path)))
 
   (setq summary_content_begin "#+BEGIN: clocktable")

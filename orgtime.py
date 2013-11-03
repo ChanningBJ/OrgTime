@@ -162,10 +162,22 @@ class TimeData(object):
     def pieChart(self, ):
         """
         """
+
+        items = self._timeData.items()
+        items = [(wtime,tag) for tag,wtime in items]
+        items.sort(reverse=True)
+        
         c = PieChart(400, 400)
         c.addTitle(self._timeFrame.getTimeFrameName(), "arialbd.ttf", 10)
         c.setPieSize(180, 100, 60)
-        c.setData(self._timeData.values(), self._timeData.keys())
+        #c.setData(self._timeData.values(), self._timeData.keys())
+        tagList = [tag for wtime,tag in items]
+        workTimeList = [wtime for wtime,tag in items]
+        c.setData(
+            workTimeList,
+            tagList
+            
+        )
         #       c.setData(data, labels)
         c.setSectorStyle(LocalGradientShading)
         c.setLabelLayout(SideLayout, 16)

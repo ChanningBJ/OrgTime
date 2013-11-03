@@ -130,6 +130,7 @@ class TimeData(object):
     def __init__(self, timeFrame, workingDir):
         """
         """
+        self._colorList = [0x00CED1]
         self._timeData = {}
         self._timeFrame = timeFrame
         self._totalTime = 0
@@ -178,6 +179,7 @@ class TimeData(object):
             tagList
             
         )
+        c.setColors2(DataColor, self._colorList)
         #       c.setData(data, labels)
         c.setSectorStyle(LocalGradientShading)
         c.setLabelLayout(SideLayout, 16)

@@ -127,7 +127,7 @@ class TimeData(object):
     """
     """
     
-    def __init__(self, timeFrame, workingDir):
+    def __init__(self, timeFrame, orgFileName, workingDir):
         """
         """
         self._colorList = [0x00CED1]
@@ -135,6 +135,7 @@ class TimeData(object):
         self._timeFrame = timeFrame
         self._totalTime = 0
         self._workingDir = workingDir
+        self._orgFileName = orgFileName
 
 
     def addTime(self, tag, (startTime,endTime,timeSpent)):
@@ -156,7 +157,7 @@ class TimeData(object):
         return self._totalTime
 
     def pieChartPath(self,):
-        fileName = self._timeFrame.getTimeFrameName().replace(' ','_')+".png"
+        fileName = self._timeFrame.getTimeFrameName().replace(' ','_')+"_"+self._orgFileName+".png"
         return os.path.join(self._workingDir,fileName)
 
     
@@ -224,9 +225,10 @@ class TimeData(object):
 if __name__ == '__main__':
     
     fd = open(sys.argv[1])
-    timeDataToday = TimeData(TimeFrame_Today(),sys.argv[2])
-    timeDataCurWeek = TimeData(TimeFrame_CurWeek(),sys.argv[2])
-    timeDataCurMonth = TimeData(TimeFrame_CurMonth(),sys.argv[2])
+    orgName = sys.argv[1].split("/")[-1].split(".")[0]
+    timeDataToday = TimeData(TimeFrame_Today(),orgName,sys.argv[2])
+    timeDataCurWeek = TimeData(TimeFrame_CurWeek(),orgName,sys.argv[2])
+    timeDataCurMonth = TimeData(TimeFrame_CurMonth(),orgName,sys.argv[2])
     curTag = None
     for line in fd.readlines():
         orgLine = OrgLine(line)

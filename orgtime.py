@@ -172,7 +172,7 @@ class TimeData(object):
         c = PieChart(400, 400)
         c.addTitle(self._timeFrame.getTimeFrameName(), "arialbd.ttf", 10)
         c.setPieSize(180, 100, 60)
-        #c.setData(self._timeData.values(), self._timeData.keys())
+
         tagList = [tag for wtime,tag in items]
         workTimeList = [wtime for wtime,tag in items]
         c.setData(
@@ -187,7 +187,7 @@ class TimeData(object):
         c.setLabelFormat("{label} ({percent}%)")
 
         b = c.addLegend(40, 230, 1, "arialbi.ttf", 10)
-#        b.setAlignment(Left)
+
         b.setBackground(Transparent, 0x444444)
         b.setRoundedCorners()
         b.setMargin(16)
@@ -197,16 +197,6 @@ class TimeData(object):
             "<*block,valign=top*>{={sector}+1}.<*advanceTo=22*><*block,width=120*>{label}" \
             "<*/*><*block,width=120,halign=right*>{percent}<*/*>%")
         
-        # # Create a PieChart object of size 360 x 300 pixels
-        # c = PieChart(360, 300)
-
-        # c.setBackground(c.linearGradientColor(0, 0, 0, c.getHeight() / 2, 0xaaccff, 0xffffff
-        #                                   ), 0x888888)
-        # c.setRoundedFrame()
-        # c.setDropShadow()
-        
-
-        # # Output the chart
         c.makeChart(self.pieChartPath())
     
     def debug_printData(self, ):

@@ -181,12 +181,9 @@ class TimeData(object):
         workTimeList = [wtime for wtime,tag in items]
         c.setData(
             workTimeList,
-            tagList
-            
+            tagList            
         )
         c.setColors2(DataColor, self._colorList)
-        #       c.setData(data, labels)
-        c.setSectorStyle(LocalGradientShading)
         c.setLabelLayout(SideLayout, 16)
         c.setLabelFormat("{label} ({percent}%)")
 

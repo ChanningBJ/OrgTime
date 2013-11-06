@@ -137,7 +137,11 @@ class TimeData(object):
         self._workingDir = workingDir
         self._orgFileName = orgFileName
 
-
+    def getTagCount(self,):
+        """
+        """
+        return len(self._timeData)
+        
     def addTime(self, tag, (startTime,endTime,timeSpent)):
         """
         """
@@ -161,7 +165,7 @@ class TimeData(object):
         return os.path.join(self._workingDir,fileName)
 
     
-    def pieChart(self, ):
+    def pieChart(self, maxTag ):
         """
         """
 
@@ -169,7 +173,7 @@ class TimeData(object):
         items = [(wtime,tag) for tag,wtime in items]
         items.sort(reverse=True)
         
-        c = PieChart(400, 400)
+        c = PieChart(400, 290 + maxTag*22)
         c.addTitle(self._timeFrame.getTimeFrameName(), "arialbd.ttf", 10)
         c.setPieSize(180, 100, 60)
 
@@ -230,6 +234,10 @@ if __name__ == '__main__':
         timeDataCurMonth.addTime(curTag,orgClockTime)
     fd.close()
 
+    maxTag = max( timeDataToday.getTagCount(), timeDataCurWeek.getTagCount(), timeDataCurMonth.getTagCount() )
+    
+    
+    
     orgTable = OrgModeTxt.OrgTable(2)
     orgTable.setHeaderData(["TimeFrame","Working Time"])
     orgTable.addRowData(["Today",timeDataToday.totalTimeStr()])
@@ -238,6 +246,6 @@ if __name__ == '__main__':
     orgTable.printTable()
     for timeData in [timeDataToday,timeDataCurWeek,timeDataCurMonth]:
         if timeData.totalTime() is not 0:
-            timeData.pieChart()
+            timeData.pieChart(maxTag)
             print OrgModeTxt.fileLink(timeData.pieChartPath()) + " ",
     
